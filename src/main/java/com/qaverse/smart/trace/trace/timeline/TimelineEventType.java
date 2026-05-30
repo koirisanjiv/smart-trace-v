@@ -1,0 +1,26 @@
+package com.qaverse.smart.trace.trace.timeline;
+
+public enum TimelineEventType {
+
+	TEST_STARTED,
+
+	STEP_STARTED,
+
+	STEP_PASSED,
+
+	STEP_FAILED,
+
+	API_CALLED,
+
+	API_RESPONSE,
+
+	DOM_UPDATED,
+
+	NETWORK_DELAY,
+
+	SCREENSHOT_CAPTURED,
+
+	ROOT_CAUSE_IDENTIFIED,
+
+	TEST_FINISHED
+}
