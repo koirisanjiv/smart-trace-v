@@ -12,7 +12,7 @@ public class FailureFingerprint {
 
 	private String signature;
 
-	private int occurrenceCount;
+	private int occurrenceCount = 0;
 
 	public String getFingerprintId() {
 		return fingerprintId;

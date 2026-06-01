@@ -43,6 +43,10 @@ public class InvestigationSearchEngine {
 
 		String expectedValue = criteria.getValue();
 
+		if (expectedValue == null) {
+			return false;
+		}
+
 		switch (criteria.getOperator()) {
 
 		case EQUALS:

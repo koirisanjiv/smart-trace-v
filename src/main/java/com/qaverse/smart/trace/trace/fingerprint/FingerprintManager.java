@@ -4,7 +4,7 @@ import com.qaverse.smart.trace.model.failure.FailureRecord;
 
 public class FingerprintManager {
 
-	private final FingerprintRepository repository = new FingerprintRepository();
+	private final FingerprintRepository repository = FingerprintStore.getRepository();
 
 	private final FailureFingerprintEngine engine = new FailureFingerprintEngine();
 
@@ -18,10 +18,15 @@ public class FingerprintManager {
 
 			existing.increment();
 
+			System.out.println("[SMART-TRACE] Existing Fingerprint : " + existing.getFingerprintId() + " Count : "
+					+ existing.getOccurrenceCount());
+
 			return existing;
 		}
 
 		repository.save(fingerprint);
+
+		System.out.println("[SMART-TRACE] New Fingerprint : " + fingerprint.getFingerprintId());
 
 		return fingerprint;
 	}

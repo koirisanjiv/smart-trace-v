@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+```
+<title>Smart Trace Dashboard</title>
+
+<link rel="stylesheet" href="../static/dashboard.css">
+```
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+```
+<div class="hero-banner">
+
+    <h1>
+        Smart Trace Failure Intelligence
+    </h1>
+
+    <p>
+        Root Cause Analysis, Fingerprints, Failure Trends and Investigation Intelligence
+    </p>
+
+</div>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- OVERVIEW -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Smart Trace Overview</h2>
+
+<div class="timeline-summary">
+
+    <div class="timeline-stat">
+        <span class="timeline-stat-label">
+            Total Failures
+        </span>
+        <span class="timeline-stat-value">
+            {{TOTAL_FAILURES}}
+        </span>
+    </div>
+
+    <div class="timeline-stat">
+        <span class="timeline-stat-label">
+            Critical Failures
+        </span>
+        <span class="timeline-stat-value">
+            {{CRITICAL_FAILURES}}
+        </span>
+    </div>
+
+    <div class="timeline-stat">
+        <span class="timeline-stat-label">
+            Unique Fingerprints
+        </span>
+        <span class="timeline-stat-value">
+            {{UNIQUE_FINGERPRINTS}}
+        </span>
+    </div>
+
+    <div class="timeline-stat">
+        <span class="timeline-stat-label">
+            Recurring Failures
+        </span>
+        <span class="timeline-stat-value">
+            {{RECURRING_FAILURES}}
+        </span>
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- ROOT CAUSES -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Top Root Causes</h2>
+
+<table>
+
+    <tr>
+        <th>Root Cause</th>
+        <th>Count</th>
+    </tr>
+
+    {{ROOT_CAUSE_ROWS}}
+
+</table>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- FINGERPRINTS -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Failure Fingerprints</h2>
+
+<table>
+
+    <tr>
+        <th>Fingerprint</th>
+        <th>Occurrences</th>
+        <th>Severity</th>
+    </tr>
+
+    {{FINGERPRINT_ROWS}}
+
+</table>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- TIMELINE -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Failure Timeline</h2>
+
+<table>
+
+    <tr>
+        <th>Date</th>
+        <th>Failures</th>
+    </tr>
+
+    {{TIMELINE_ROWS}}
+
+</table>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- TOP FAILING TESTS -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Most Failing Tests</h2>
+
+<table>
+
+    <tr>
+        <th>Test Name</th>
+        <th>Failure Count</th>
+    </tr>
+
+    {{TOP_TEST_ROWS}}
+
+</table>
+```
+
+</div>
+
+<!-- ===================================================== -->
+
+<!-- INVESTIGATIONS -->
+
+<!-- ===================================================== -->
+
+<div class="card">
+
+```
+<h2>Latest Investigations</h2>
+
+<table>
+
+    <tr>
+
+        <th>Test Name</th>
+
+        <th>Root Cause</th>
+
+        <th>Severity</th>
+
+        <th>Priority</th>
+
+        <th>Confidence</th>
+
+        <th>Fingerprint</th>
+
+    </tr>
+
+    {{INVESTIGATION_ROWS}}
+
+</table>
+```
+
+</div>
+
+</body>
+
+</html>

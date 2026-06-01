@@ -41,7 +41,11 @@ public class SmartTraceWorkflow {
 
 		FailureFingerprint fingerprint = fingerprintManager.process(failureRecord);
 
+		failureRecord.setFingerprintId(fingerprint.getFingerprintId());
+
 		SimilarityResult similarity = similarityManager.analyze(failureRecord);
+
+		System.out.println("[SMART-TRACE] Similar Failures : " + similarity.size());
 
 		RootCauseTree tree = rootCauseTreeBuilder.build(failureRecord);
 

@@ -40,7 +40,7 @@ public class InvestigationMapper {
 			response.setRecommendedAction(summary.getRecommendedAction());
 		}
 
-		if (record.getEvidence() != null) {
+		if (record.getEvidence() != null && record.getEvidence().getLogs() != null) {
 
 			response.getEvidence().addAll(record.getEvidence().getLogs());
 		}

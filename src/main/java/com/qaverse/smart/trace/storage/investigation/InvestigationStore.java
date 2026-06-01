@@ -8,7 +8,7 @@ public final class InvestigationStore {
 	}
 
 	public static InvestigationRepository getRepository() {
-
+		System.out.println("[SMART-TRACE] Repository Instance : " + REPOSITORY);
 		return REPOSITORY;
 	}
 }

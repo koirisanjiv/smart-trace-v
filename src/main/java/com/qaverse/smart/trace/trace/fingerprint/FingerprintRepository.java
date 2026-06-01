@@ -11,6 +11,8 @@ public class FingerprintRepository {
 	public void save(FailureFingerprint fingerprint) {
 
 		fingerprints.put(fingerprint.getSignature(), fingerprint);
+
+		System.out.println("[SMART-TRACE] Fingerprint Repository Size : " + fingerprints.size());
 	}
 
 	public FailureFingerprint find(String signature) {

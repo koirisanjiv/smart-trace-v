@@ -16,6 +16,7 @@ public class CsvTraceExporter {
 
 		try (FileWriter writer = new FileWriter(file)) {
 
+
 			writer.write("KEY,VALUE\n");
 
 			/*
@@ -40,15 +41,15 @@ public class CsvTraceExporter {
 
 			if (rootCause != null) {
 
-				writer.write("RootCause," + sanitize(rootCause.getRootCause()) + "\n");
-
 				writer.write("Category," + sanitize(rootCause.getCategory()) + "\n");
 
-				writer.write("Severity," + sanitize(rootCause.getSeverity()) + "\n");
+				writer.write("\"rootCause\":\"" + (rootCause == null ? "" : rootCause.getRootCause()) + "\",\n");
 
-				writer.write("Priority," + sanitize(rootCause.getPriority()) + "\n");
+				writer.write("\"severity\":\"" + (rootCause == null ? "" : rootCause.getSeverity()) + "\",\n");
 
-				writer.write("Confidence," + rootCause.getConfidence() + "\n");
+				writer.write("\"priority\":\"" + (rootCause == null ? "" : rootCause.getPriority()) + "\",\n");
+
+				writer.write("\"confidence\":" + (rootCause == null ? 0 : rootCause.getConfidence()) + ",\n");
 			}
 
 			/*

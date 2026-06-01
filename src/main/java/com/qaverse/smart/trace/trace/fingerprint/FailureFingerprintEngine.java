@@ -2,7 +2,6 @@ package com.qaverse.smart.trace.trace.fingerprint;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.UUID;
 
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 
@@ -12,7 +11,11 @@ public class FailureFingerprintEngine {
 
 		FailureFingerprint fingerprint = new FailureFingerprint();
 
-		fingerprint.setFingerprintId(UUID.randomUUID().toString());
+		String signature = generateSignature(record);
+
+		fingerprint.setSignature(signature);
+
+		fingerprint.setFingerprintId(signature);
 
 		fingerprint.setExceptionType(record.getExceptionType());
 
@@ -20,10 +23,6 @@ public class FailureFingerprintEngine {
 
 			fingerprint.setRootCause(record.getRootCause().getRootCause());
 		}
-
-		String signature = generateSignature(record);
-
-		fingerprint.setSignature(signature);
 
 		fingerprint.increment();
 
@@ -34,7 +33,9 @@ public class FailureFingerprintEngine {
 
 		try {
 
-			String source = record.getExceptionType() + "|" + record.getExceptionMessage();
+			String rootCause = record.getRootCause() == null ? "UNKNOWN" : record.getRootCause().getRootCause();
+
+			String source = record.getExceptionType() + "|" + rootCause + "|" + record.getTestName();
 
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
@@ -57,6 +58,8 @@ public class FailureFingerprintEngine {
 
 	private int sourceHash(FailureRecord record) {
 
-		return (record.getExceptionType() + record.getExceptionMessage()).hashCode();
+		String rootCause = record.getRootCause() == null ? "UNKNOWN" : record.getRootCause().getRootCause();
+
+		return (record.getExceptionType() + rootCause + record.getTestName()).hashCode();
 	}
 }

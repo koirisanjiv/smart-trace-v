@@ -26,4 +26,5 @@ public class WorkflowResult {
 	public void setWidgets(List<WidgetData> widgets) {
 		this.widgets = widgets;
 	}
+
 }

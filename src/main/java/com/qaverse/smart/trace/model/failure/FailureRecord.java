@@ -41,6 +41,10 @@ public class FailureRecord {
 
 	private final List<StepTrace> stepTraces = new ArrayList<>();
 
+	private String fingerprintId;
+
+
+
 	public String getFailureId() {
 
 		return failureId;
@@ -215,6 +219,14 @@ public class FailureRecord {
 
 			stepTraces.add(step);
 		}
+	}
+
+	public String getFingerprintId() {
+		return fingerprintId;
+	}
+
+	public void setFingerprintId(String fingerprintId) {
+		this.fingerprintId = fingerprintId;
 	}
 
 	@Override

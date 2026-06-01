@@ -6,7 +6,10 @@ import org.testng.ITestResult;
 
 import com.qaverse.smart.trace.core.SmartTraceEngine;
 import com.qaverse.smart.trace.core.TraceBootstrap;
+import com.qaverse.smart.trace.dashboard.html.SmartTraceDashboardGenerator;
 import com.qaverse.smart.trace.debug.LocalInvestigationPrinter;
+import com.qaverse.smart.trace.export.ExportFormat;
+import com.qaverse.smart.trace.export.TraceExportManager;
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 import com.qaverse.smart.trace.storage.investigation.InvestigationRepository;
 import com.qaverse.smart.trace.storage.investigation.InvestigationStore;
@@ -76,9 +79,15 @@ public class SmartTraceTestListener implements ITestListener {
 
 		repository.save(investigation);
 
+		// SearchValidation.validate();
+		TraceExportManager exporter = new TraceExportManager();
+		exporter.export(ExportFormat.JSON, "smart-trace/" + failureRecord.getFailureId() + ".json", failureRecord);
+
 		System.out.println("[SMART-TRACE] Repository Count : " + repository.count());
 
 		new LocalInvestigationPrinter().print(investigation);
+
+		new SmartTraceDashboardGenerator().generate();
 
 		StepTraceManager.clear();
 
