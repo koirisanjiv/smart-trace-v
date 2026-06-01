@@ -6,6 +6,7 @@ import org.testng.ITestResult;
 
 import com.qaverse.smart.trace.core.SmartTraceEngine;
 import com.qaverse.smart.trace.core.TraceBootstrap;
+import com.qaverse.smart.trace.debug.LocalInvestigationPrinter;
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 import com.qaverse.smart.trace.storage.investigation.InvestigationRepository;
 import com.qaverse.smart.trace.storage.investigation.InvestigationStore;
@@ -25,13 +26,13 @@ public class SmartTraceTestListener implements ITestListener {
 
 	@Override
 	public void onStart(ITestContext context) {
+
+		engine = TraceBootstrap.getEngine();
+
 		if (engine == null) {
 
 			System.err.println("[SMART-TRACE] Engine not initialized. " + "Call Trace.enable() before execution.");
-
-			return;
 		}
-		engine = TraceBootstrap.getEngine();
 	}
 
 	@Override
@@ -75,8 +76,18 @@ public class SmartTraceTestListener implements ITestListener {
 
 		repository.save(investigation);
 
+		System.out.println("[SMART-TRACE] Repository Count : " + repository.count());
+
+		new LocalInvestigationPrinter().print(investigation);
+
 		StepTraceManager.clear();
 
 		System.out.println("[SMART-TRACE] Investigation Generated : " + failureRecord.getFailureId());
+	}
+
+	@Override
+	public void onFinish(ITestContext context) {
+
+		StepTraceManager.clear();
 	}
 }

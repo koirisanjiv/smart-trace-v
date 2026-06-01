@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.testng.ITestResult;
 
 import com.qaverse.smart.trace.core.TraceContextManager;
+import com.qaverse.smart.trace.intelligence.SmartDiagnosisEngine;
+import com.qaverse.smart.trace.model.diagnosis.DiagnosisResult;
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 
 public final class FailureRecordBuilder {
@@ -23,6 +25,21 @@ public final class FailureRecordBuilder {
 		record.setFailureTime(LocalDateTime.now());
 
 		Throwable throwable = result.getThrowable();
+
+		SmartDiagnosisEngine diagnosisEngine = new SmartDiagnosisEngine();
+
+		DiagnosisResult diagnosis = diagnosisEngine.diagnose(throwable, "", 0, false);
+
+		FailureRecord diagnosed = diagnosis.getFailureRecord();
+
+		if (diagnosed != null) {
+
+			record.setRootCause(diagnosed.getRootCause());
+
+			record.setCorrelation(diagnosed.getCorrelation());
+
+			record.getRecommendations().addAll(diagnosed.getRecommendations());
+		}
 
 		if (throwable != null) {
 

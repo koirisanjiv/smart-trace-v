@@ -8,6 +8,11 @@ public class FailureInvestigationEngine {
 
 		InvestigationSummary summary = new InvestigationSummary();
 
+		summary.setRootCause("UNKNOWN");
+		summary.setConfidence(0);
+		summary.setSeverity("UNCLASSIFIED");
+		summary.setPriority("MEDIUM");
+
 		if (record.getRootCause() != null) {
 
 			summary.setRootCause(record.getRootCause().getRootCause());
