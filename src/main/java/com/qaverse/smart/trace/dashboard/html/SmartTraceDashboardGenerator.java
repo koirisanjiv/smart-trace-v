@@ -1,6 +1,7 @@
 package com.qaverse.smart.trace.dashboard.html;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.List;
@@ -13,61 +14,23 @@ public class SmartTraceDashboardGenerator {
 	private final RootCauseAggregator rootCauseAggregator = new RootCauseAggregator();
 
 	private final FingerprintAggregator fingerprintAggregator = new FingerprintAggregator();
+	
+	private final InvestigationTableBuilder investigationTableBuilder = new InvestigationTableBuilder();
+	
+	private final TopFailingTestsAggregator topFailingTestsAggregator = new TopFailingTestsAggregator();
+	
+	private final TimelineAggregator timelineAggregator = new TimelineAggregator();
 
 	public void generate() {
 
 		try {
-
+			
 			List<InvestigationJson> investigations = reader.readAll();
 
-			// String html = Files.readString(new
-			// File("templates/smart-trace-dashboard.html").toPath());
+			InputStream stream = getClass().getClassLoader()
+					.getResourceAsStream("templates/smart-trace-dashboard.html");
 
-			String html = """
-					<!DOCTYPE html>
-					<html>
-					<head>
-					    <title>Smart Trace Dashboard</title>
-					</head>
-					<body>
-
-					<h1>Smart Trace Dashboard</h1>
-
-					<h2>Overview</h2>
-
-					<p>Total Failures: {{TOTAL_FAILURES}}</p>
-					<p>Critical Failures: {{CRITICAL_FAILURES}}</p>
-					<p>Unique Fingerprints: {{UNIQUE_FINGERPRINTS}}</p>
-					<p>Recurring Failures: {{RECURRING_FAILURES}}</p>
-
-					<h2>Root Causes</h2>
-
-					<table border='1'>
-					<tr>
-					<th>Root Cause</th>
-					<th>Count</th>
-					</tr>
-
-					{{ROOT_CAUSE_ROWS}}
-
-					</table>
-
-					<h2>Fingerprints</h2>
-
-					<table border='1'>
-					<tr>
-					<th>Fingerprint</th>
-					<th>Occurrences</th>
-					<th>Severity</th>
-					</tr>
-
-					{{FINGERPRINT_ROWS}}
-
-					</table>
-
-					</body>
-					</html>
-					""";
+			String html = new String(stream.readAllBytes());
 
 			html = html.replace("{{TOTAL_FAILURES}}", String.valueOf(investigations.size()));
 
@@ -80,7 +43,13 @@ public class SmartTraceDashboardGenerator {
 			html = html.replace("{{ROOT_CAUSE_ROWS}}", rootCauseAggregator.buildRows(investigations));
 
 			html = html.replace("{{FINGERPRINT_ROWS}}", fingerprintAggregator.buildRows(investigations));
-
+			
+			html = html.replace("{{INVESTIGATION_ROWS}}", investigationTableBuilder.buildRows(investigations));
+			
+			html = html.replace("{{TOP_TEST_ROWS}}", topFailingTestsAggregator.buildRows(investigations));
+			
+			html = html.replace("{{TIMELINE_ROWS}}", timelineAggregator.buildRows(investigations));
+			
 			File output = new File("smart-trace/smart-trace-dashboard.html");
 
 			output.getParentFile().mkdirs();

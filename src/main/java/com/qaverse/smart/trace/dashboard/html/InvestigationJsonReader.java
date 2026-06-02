@@ -67,6 +67,8 @@ public class InvestigationJsonReader {
 		record.setPriority(value(json, "priority"));
 
 		record.setFingerprintId(value(json, "fingerprintId"));
+		
+		record.setConfidence(parseInt(numericValue(json, "confidence")));
 
 		return record;
 	}
@@ -87,5 +89,40 @@ public class InvestigationJsonReader {
 		int end = json.indexOf("\"", start);
 
 		return json.substring(start, end);
+	}
+	
+	private String numericValue(String json, String key) {
+
+		String token = "\"" + key + "\":";
+
+		int start = json.indexOf(token);
+
+		if (start == -1) {
+
+			return "";
+		}
+
+		start += token.length();
+
+		int end = json.indexOf(",", start);
+
+		if (end == -1) {
+
+			end = json.indexOf("}", start);
+		}
+
+		return json.substring(start, end).trim();
+	}
+	
+	private int parseInt(String value) {
+
+		try {
+
+			return Integer.parseInt(value);
+
+		} catch (Exception e) {
+
+			return 0;
+		}
 	}
 }
