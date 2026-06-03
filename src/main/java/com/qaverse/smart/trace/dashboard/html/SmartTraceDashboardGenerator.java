@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.qaverse.smart.trace.core.TraceBootstrap;
+
 public class SmartTraceDashboardGenerator {
 
 	private final InvestigationJsonReader reader = new InvestigationJsonReader();
@@ -14,17 +16,25 @@ public class SmartTraceDashboardGenerator {
 	private final RootCauseAggregator rootCauseAggregator = new RootCauseAggregator();
 
 	private final FingerprintAggregator fingerprintAggregator = new FingerprintAggregator();
-	
+
 	private final InvestigationTableBuilder investigationTableBuilder = new InvestigationTableBuilder();
-	
+
 	private final TopFailingTestsAggregator topFailingTestsAggregator = new TopFailingTestsAggregator();
-	
+
 	private final TimelineAggregator timelineAggregator = new TimelineAggregator();
 
 	public void generate() {
 
 		try {
-			
+
+			String projectName = "DEFAULT";
+
+			if (TraceBootstrap.getOptions() != null && TraceBootstrap.getOptions().getProjectName() != null
+					&& !TraceBootstrap.getOptions().getProjectName().isBlank()) {
+
+				projectName = TraceBootstrap.getOptions().getProjectName();
+			}
+
 			List<InvestigationJson> investigations = reader.readAll();
 
 			InputStream stream = getClass().getClassLoader()
@@ -43,14 +53,14 @@ public class SmartTraceDashboardGenerator {
 			html = html.replace("{{ROOT_CAUSE_ROWS}}", rootCauseAggregator.buildRows(investigations));
 
 			html = html.replace("{{FINGERPRINT_ROWS}}", fingerprintAggregator.buildRows(investigations));
-			
+
 			html = html.replace("{{INVESTIGATION_ROWS}}", investigationTableBuilder.buildRows(investigations));
-			
+
 			html = html.replace("{{TOP_TEST_ROWS}}", topFailingTestsAggregator.buildRows(investigations));
-			
+
 			html = html.replace("{{TIMELINE_ROWS}}", timelineAggregator.buildRows(investigations));
-			
-			File output = new File("smart-trace/smart-trace-dashboard.html");
+
+			File output = new File("Reports/" + projectName + "/smart-trace/trace-dashboard.html");
 
 			output.getParentFile().mkdirs();
 

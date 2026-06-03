@@ -10,11 +10,12 @@ import com.qaverse.smart.trace.sdk.TraceOptions;
 public final class TraceBootstrap {
 
 	private static SmartTraceEngine engine;
+	private static TraceOptions options;
 
 	private TraceBootstrap() {
 	}
 
-	public static void initialize(TraceOptions options) {
+	public static void initialize(TraceOptions traceOptions) {
 
 		TraceEventBus eventBus = new TraceEventBus();
 
@@ -23,6 +24,8 @@ public final class TraceBootstrap {
 		engine = new SmartTraceEngine(eventBus);
 
 		SmartTraceDashboard.initialize();
+
+		TraceBootstrap.options = traceOptions;
 
 		System.out.println("Smart Trace Engine Initialized");
 	}
@@ -38,5 +41,9 @@ public final class TraceBootstrap {
 
 	public static SmartTraceEngine getEngine() {
 		return engine;
+	}
+	
+	public static TraceOptions getOptions() {
+	    return options;
 	}
 }

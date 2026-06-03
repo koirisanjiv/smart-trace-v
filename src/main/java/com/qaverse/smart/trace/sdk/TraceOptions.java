@@ -8,6 +8,9 @@ public class TraceOptions {
 	private boolean asyncEnabled = true;
 	private boolean storeJson = true;
 	private String storageDirectory = "smart-trace-output";
+	
+	private String projectName;
+	private String environment;
 
 	public boolean isScreenshotEnabled() {
 		return screenshotEnabled;
@@ -55,5 +58,22 @@ public class TraceOptions {
 
 	public void setStorageDirectory(String storageDirectory) {
 		this.storageDirectory = storageDirectory;
+	}
+	
+	
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 }
