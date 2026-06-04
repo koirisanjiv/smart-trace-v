@@ -11,7 +11,10 @@ public class InvestigationJson {
 	private String testName;
 
 	private String exceptionType;
+	
+	private String exceptionMessage;
 
+	
 	private String rootCause;
 
 	private String severity;
@@ -21,6 +24,26 @@ public class InvestigationJson {
 	private int confidence;
 
 	private String fingerprintId;
+	
+	private String screenshotPath;
+
+	public String getScreenshotPath() {
+		return screenshotPath;
+	}
+
+	public void setScreenshotPath(String screenshotPath) {
+		this.screenshotPath = screenshotPath;
+	}
+
+	public String getVideoPath() {
+		return videoPath;
+	}
+
+	public void setVideoPath(String videoPath) {
+		this.videoPath = videoPath;
+	}
+
+	private String videoPath;
 
 	public String getFailureId() {
 		return failureId;
@@ -101,4 +124,13 @@ public class InvestigationJson {
 	public void setFingerprintId(String fingerprintId) {
 		this.fingerprintId = fingerprintId;
 	}
+	
+	public String getExceptionMessage() {
+		return exceptionMessage;
+	}
+
+	public void setExceptionMessage(String exceptionMessage) {
+		this.exceptionMessage = exceptionMessage;
+	}
+
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.qaverse.smart.trace.core.TraceBootstrap;
+import com.qaverse.smart.trace.dashboard.html.detail.FailureDetailPageGenerator;
 
 public class SmartTraceDashboardGenerator {
 
@@ -22,6 +23,8 @@ public class SmartTraceDashboardGenerator {
 	private final TopFailingTestsAggregator topFailingTestsAggregator = new TopFailingTestsAggregator();
 
 	private final TimelineAggregator timelineAggregator = new TimelineAggregator();
+	
+	
 
 	public void generate() {
 
@@ -36,6 +39,12 @@ public class SmartTraceDashboardGenerator {
 			}
 
 			List<InvestigationJson> investigations = reader.readAll();
+			
+			//Failure details
+			FailureDetailPageGenerator detailGenerator = new FailureDetailPageGenerator();
+			for (InvestigationJson investigation : investigations) {
+				detailGenerator.generate(projectName, investigation);
+			}
 
 			InputStream stream = getClass().getClassLoader()
 					.getResourceAsStream("templates/smart-trace-dashboard.html");
@@ -59,7 +68,7 @@ public class SmartTraceDashboardGenerator {
 			html = html.replace("{{TOP_TEST_ROWS}}", topFailingTestsAggregator.buildRows(investigations));
 
 			html = html.replace("{{TIMELINE_ROWS}}", timelineAggregator.buildRows(investigations));
-
+			
 			File output = new File("Reports/" + projectName + "/smart-trace/trace-dashboard.html");
 
 			output.getParentFile().mkdirs();
@@ -99,4 +108,6 @@ public class SmartTraceDashboardGenerator {
 
 		return Math.max(0, investigations.size() - uniqueFingerprints(investigations));
 	}
+	
+
 }

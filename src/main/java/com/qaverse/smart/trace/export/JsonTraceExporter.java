@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.qaverse.smart.trace.model.failure.ArtifactRecord;
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 import com.qaverse.smart.trace.model.failure.RootCauseRecord;
 
@@ -35,11 +36,28 @@ public class JsonTraceExporter {
 			writer.write("\"executionTime\":" + record.getExecutionTime() + ",\n");
 
 			writer.write("\"exceptionType\":\"" + sanitize(record.getExceptionType()) + "\",\n");
+			
+			ArtifactRecord artifacts = record.getArtifacts();
+			System.out.println("[SMART-TRACE] Artifacts Object : " + record.getArtifacts());
+			if (artifacts != null) {
 
-			writer.write("\"exceptionMessage\":\"" + sanitize(record.getExceptionMessage()) + "\"");
+				writer.write("\"screenshotPath\":\"" + sanitize(artifacts.getScreenshotPath()) + "\",\n");
+
+				writer.write("\"videoPath\":\"" + sanitize(artifacts.getVideoPath()) + "\",\n");
+				
+				System.out.println("[SMART-TRACE] Screenshot : " + artifacts.getScreenshotPath());
+
+				System.out.println("[SMART-TRACE] Video : " + artifacts.getVideoPath());
+			}
+			
+
+			//writer.write("\"exceptionMessage\":\"" + sanitize(record.getExceptionMessage()) + "\"");
+			
+			writer.write("\"exceptionMessage\":\"" + sanitize(formatException(record.getExceptionMessage())) + "\",\n");
+
+			
 
 			RootCauseRecord rootCause = record.getRootCause();
-
 			if (rootCause != null) {
 
 				writer.write(",\n");
@@ -80,5 +98,37 @@ public class JsonTraceExporter {
 		}
 
 		return value.replace("\"", "'").replace("\n", " ").replace("\r", " ");
+	}
+	
+	private String formatException(
+	        String message
+	) {
+
+	    if (message == null) {
+
+	        return "";
+	    }
+
+	    return message
+
+	            .replace(
+	                    "Build info:",
+	                    "\n\nBuild info:"
+	            )
+
+	            .replace(
+	                    "System info:",
+	                    "\n\nSystem info:"
+	            )
+
+	            .replace(
+	                    "Driver info:",
+	                    "\n\nDriver info:"
+	            )
+
+	            .replace(
+	                    "(tried for",
+	                    "\n\n(tried for"
+	            );
 	}
 }

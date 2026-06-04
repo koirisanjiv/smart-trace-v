@@ -59,6 +59,8 @@ public class InvestigationJsonReader {
 		record.setTestName(value(json, "testName"));
 
 		record.setExceptionType(value(json, "exceptionType"));
+		
+		record.setExceptionMessage(value(json, "exceptionMessage"));
 
 		record.setRootCause(value(json, "rootCause"));
 
@@ -69,6 +71,10 @@ public class InvestigationJsonReader {
 		record.setFingerprintId(value(json, "fingerprintId"));
 		
 		record.setConfidence(parseInt(numericValue(json, "confidence")));
+		
+		record.setScreenshotPath(value(json, "screenshotPath"));
+
+		record.setVideoPath(value(json, "videoPath"));
 
 		return record;
 	}

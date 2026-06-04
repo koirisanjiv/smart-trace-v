@@ -11,56 +11,24 @@ public class InvestigationTableBuilder {
 		StringBuilder rows =
 				new StringBuilder();
 
-		for (InvestigationJson investigation
-				: investigations) {
+		for (InvestigationJson investigation : investigations) {
 
 			rows.append("<tr>");
 
-			rows.append("<td>")
-					.append(
-							nullSafe(
-									investigation.getTestName()
-							)
-					)
-					.append("</td>");
+			rows.append("<td>").append(nullSafe(investigation.getTestName())).append("</td>");
 
-			rows.append("<td>")
-					.append(
-							nullSafe(
-									investigation.getRootCause()
-							)
-					)
-					.append("</td>");
+			rows.append("<td>").append(nullSafe(investigation.getRootCause())).append("</td>");
 
-			rows.append("<td>")
-					.append(
-							nullSafe(
-									investigation.getSeverity()
-							)
-					)
-					.append("</td>");
+			rows.append("<td>").append(nullSafe(investigation.getSeverity())).append("</td>");
 
-			rows.append("<td>")
-					.append(
-							nullSafe(
-									investigation.getPriority()
-							)
-					)
-					.append("</td>");
+			rows.append("<td>").append(nullSafe(investigation.getPriority())).append("</td>");
 
-			rows.append("<td>")
-					.append(
-							investigation.getConfidence()
-					)
-					.append("%</td>");
+			rows.append("<td>").append(investigation.getConfidence()).append("%</td>");
 
-			rows.append("<td>")
-					.append(
-							shortFingerprint(
-									investigation.getFingerprintId()
-							)
-					)
-					.append("</td>");
+			rows.append("<td>").append(shortFingerprint(investigation.getFingerprintId())).append("</td>");
+			
+			rows.append("<td>" + "<a href='failures/" + investigation.getFailureId() + ".html'>" + "View Details"
+					+ "</a>" + "</td>");
 
 			rows.append("</tr>");
 		}
