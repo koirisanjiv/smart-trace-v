@@ -6,7 +6,7 @@
 
     <groupId>com.qaverse</groupId>
     <artifactId>smart-trace</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>smart-trace-engine</name>
