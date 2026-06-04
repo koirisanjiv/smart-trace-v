@@ -1,5 +1,9 @@
 package com.qaverse.smart.trace.sdk;
 
+import java.util.function.Supplier;
+
+import org.openqa.selenium.WebDriver;
+
 public class TraceOptions {
 
 	private boolean screenshotEnabled = true;
@@ -11,6 +15,17 @@ public class TraceOptions {
 	
 	private String projectName;
 	private String environment;
+	private Supplier<WebDriver> driverProvider;
+
+	public Supplier<WebDriver> getDriverProvider() {
+	    return driverProvider;
+	}
+
+	public void setDriverProvider(
+	        Supplier<WebDriver> driverProvider
+	) {
+	    this.driverProvider = driverProvider;
+	}
 
 	public boolean isScreenshotEnabled() {
 		return screenshotEnabled;

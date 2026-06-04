@@ -20,11 +20,18 @@ public class ScreenshotCaptureService {
 
 			File destination = new File(fileName);
 
+			File parent = destination.getParentFile();
+
+			if (parent != null) {
+
+				parent.mkdirs();
+			}
+
 			Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 			result.setSuccess(true);
 
-			result.setScreenshotPath(destination.getAbsolutePath());
+			result.setScreenshotPath("screenshots/" + destination.getName());
 
 		} catch (Exception e) {
 

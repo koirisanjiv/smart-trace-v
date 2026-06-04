@@ -2,31 +2,38 @@ package com.qaverse.smart.trace.capture;
 
 import org.openqa.selenium.WebDriver;
 
-import com.qaverse.smart.trace.capture.page.PageSourceCaptureResult;
-import com.qaverse.smart.trace.capture.page.PageSourceCaptureService;
 import com.qaverse.smart.trace.capture.screenshots.ScreenshotCaptureResult;
 import com.qaverse.smart.trace.capture.screenshots.ScreenshotCaptureService;
+import com.qaverse.smart.trace.capture.video.VideoCaptureResult;
+import com.qaverse.smart.trace.capture.video.VideoCaptureService;
+import com.qaverse.smart.trace.model.failure.ArtifactRecord;
 
 public class ArtifactCaptureCoordinator {
 
 	private final ScreenshotCaptureService screenshotService = new ScreenshotCaptureService();
 
-	private final PageSourceCaptureService pageSourceService = new PageSourceCaptureService();
+	//private final VideoCaptureService videoService = new VideoCaptureService();
 
-	public ArtifactBundle capture(WebDriver driver, String traceId) {
+	public ArtifactRecord capture(WebDriver driver, String failureId, String projectName) {
 
-		ArtifactBundle bundle = new ArtifactBundle();
+		ArtifactRecord artifact = new ArtifactRecord();
 
-		ScreenshotCaptureResult screenshot = screenshotService.capture(driver,
-				"smart-trace-output/screenshots/" + traceId + ".png");
+		String screenshotFile = "Reports/" + projectName + "/smart-trace/screenshots/" + failureId + ".png";
 
-		PageSourceCaptureResult page = pageSourceService.capture(driver,
-				"smart-trace-output/pages/" + traceId + ".html");
+		ScreenshotCaptureResult screenshot = screenshotService.capture(driver, screenshotFile);
 
-		bundle.setScreenshotPath(screenshot.getScreenshotPath());
+		if (screenshot.isSuccess()) {
 
-		bundle.setPageSourcePath(page.getFilePath());
+			artifact.setScreenshotPath(screenshot.getScreenshotPath());	
+		}
 
-		return bundle;
+//		VideoCaptureResult video = videoService.capture(failureId);
+//
+//		if (video.isSuccess()) {
+//
+//			artifact.setVideoPath(video.getVideoUrl());
+//		}
+
+		return artifact;
 	}
 }

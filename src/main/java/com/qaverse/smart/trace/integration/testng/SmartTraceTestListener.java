@@ -1,15 +1,20 @@
 package com.qaverse.smart.trace.integration.testng;
 
+import java.sql.DriverManager;
+
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import com.qaverse.smart.trace.capture.ArtifactCaptureCoordinator;
 import com.qaverse.smart.trace.core.SmartTraceEngine;
 import com.qaverse.smart.trace.core.TraceBootstrap;
 import com.qaverse.smart.trace.dashboard.html.SmartTraceDashboardGenerator;
 import com.qaverse.smart.trace.debug.LocalInvestigationPrinter;
 import com.qaverse.smart.trace.export.ExportFormat;
 import com.qaverse.smart.trace.export.TraceExportManager;
+import com.qaverse.smart.trace.model.failure.ArtifactRecord;
 import com.qaverse.smart.trace.model.failure.FailureRecord;
 import com.qaverse.smart.trace.storage.investigation.InvestigationRepository;
 import com.qaverse.smart.trace.storage.investigation.InvestigationStore;
@@ -76,6 +81,21 @@ public class SmartTraceTestListener implements ITestListener {
 		StepTraceRecorder recorder = StepTraceManager.getRecorder();
 
 		InvestigationRecord investigation = workflow.investigate(failureRecord, recorder);
+		
+		String projectName = TraceBootstrap.getOptions().getProjectName();
+
+		ArtifactCaptureCoordinator coordinator = new ArtifactCaptureCoordinator();
+		
+		WebDriver driver = null;
+
+		if (TraceBootstrap.getOptions() != null && TraceBootstrap.getOptions().getDriverProvider() != null) {
+			driver = TraceBootstrap.getOptions().getDriverProvider().get();
+		}
+
+		ArtifactRecord artifacts = coordinator.capture(driver, failureRecord.getFailureId(),
+				projectName);
+
+		failureRecord.setArtifacts(artifacts);
 
 		repository.save(investigation);
 

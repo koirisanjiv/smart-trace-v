@@ -3,6 +3,7 @@ package com.qaverse.smart.trace.dashboard.html.detail;
 import java.io.File;
 import java.nio.file.Files;
 
+import com.qaverse.smart.trace.capture.video.VideoResolver;
 import com.qaverse.smart.trace.dashboard.html.InvestigationJson;
 
 public class FailureDetailPageGenerator {
@@ -148,8 +149,12 @@ public class FailureDetailPageGenerator {
 			
 			String screenshotLink = buildScreenshotLink(investigation.getScreenshotPath());
 
-			String videoLink = buildVideoLink(investigation.getVideoPath());
-			
+			VideoResolver resolver = new VideoResolver();
+
+			String videoPath = resolver.findVideo(projectName, investigation.getTestName());
+
+			String videoLink = buildVideoLink(videoPath);
+
 			html = html.replace("{{SCREENSHOT_LINK}}", screenshotLink);
 
 			html = html.replace("{{VIDEO_LINK}}", videoLink);
@@ -175,16 +180,14 @@ public class FailureDetailPageGenerator {
 		return value == null ? "" : value;
 	}
 	
-	private String buildScreenshotLink(
-	        String path
-	) {
+	private String buildScreenshotLink(String path) {
 
 	    if (path == null || path.isBlank()) {
 
 	        return "Not Available";
 	    }
 
-	    return "<a href='../../"
+	    return "<a href='../"
 	            + path
 	            + "' target='_blank'>"
 	            + "View Screenshot"
@@ -200,7 +203,7 @@ public class FailureDetailPageGenerator {
 	        return "Not Available";
 	    }
 
-	    return "<a href='../../"
+	    return "<a href='../"
 	            + path
 	            + "' target='_blank'>"
 	            + "View Video"
